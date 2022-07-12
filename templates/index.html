@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% for data in response%}
+        <table>
+            <thead>
+                <tr>
+                    <th>Sl. no</th>
+                    <th>Brand Name</th>
+                    <th>Brand Image</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>{{data.b_slno}}</th>
+                    <th>{{data.b_name}}</th>
+                    <th>{{data.b_image}}</th>
+                </tr>
+            </tbody>
+        </table>
+    {% endfor %}
+</body>
+</html>
