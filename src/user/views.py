@@ -1,5 +1,4 @@
 import datetime, jwt
-from jwt import PyJWT
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework import permissions
 from rest_framework.views import APIView
