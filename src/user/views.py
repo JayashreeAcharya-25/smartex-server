@@ -1,4 +1,5 @@
-import datetime, jwt
+import datetime
+from jwt import PyJWT
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework import permissions
 from rest_framework.views import APIView
@@ -49,7 +50,7 @@ class Login(APIView):
                 'iat': datetime.datetime.utcnow()  # iat is the date, were token is created.
             }
 
-            token = jwt.encode(payload, 'secret', algorithm='HS256').decode('utf-8')  #1st params : payload, 2nd params : SECRET_KEY, 3rd params : algo
+            token = PyJWT.encode(payload, 'secret', algorithm='HS256').decode('utf-8')  #1st params : payload, 2nd params : SECRET_KEY, 3rd params : algo
 
             response = Response()
 
@@ -85,8 +86,8 @@ class UserView(APIView):
             raise AuthenticationFailed('Unauthenticated')
         
         try:
-            payload = jwt.decode(token, 'secret', algorithm=['HS256'])
-        except jwt.ExpiredSignatureError:
+            payload = PyJWT.decode(token, 'secret', algorithm=['HS256'])
+        except PyJWT.ExpiredSignatureError:
             raise AuthenticationFailed('Unauthenticated')
 
         user = User.objects.filter(id=payload['id']).first()
