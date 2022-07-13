@@ -67,6 +67,8 @@ class Login(APIView):
                 'jwt': token,
                 'data': data,
             }
+            
+            response['Access-Control-Allow-Origin'] = '*'
 
             return response
         
