@@ -93,7 +93,7 @@ class UpdateProduct(APIView):
         try:
             data = request.data
             product = Product.objects.get(id = data['id'])
-        
+            
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -116,14 +116,16 @@ class UpdateProduct(APIView):
 class DeleteProduct(APIView):
     def delete(self, request, id=0):
         try:
-            product = Product.objects.filter(id = id)
-            product.delete()
+            
+            product = Product.objects.filter(id = id).delete()
+            
             response = Response(product)
             response.data = {
                 'data': product,
                 'message': 'Deleted Successfully',
                 'status': status.HTTP_200_OK
             }
+            return response
 
         except Exception as e:
             return Response(format(e))

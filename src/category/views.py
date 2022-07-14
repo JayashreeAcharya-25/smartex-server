@@ -75,6 +75,7 @@ class DeleteCategory(APIView):
                 'message': 'Deleted Successfully',
                 'status': status.HTTP_200_OK
             }
+            return response
 
         except Exception as e:
             return Response(format(e))

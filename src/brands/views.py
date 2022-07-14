@@ -48,29 +48,63 @@ class GetBrands(APIView):
             return Response(format(e)) 
         
 
+# class UpdateBrands(APIView):
+#     def put(self, request):
+#         try:
+#             data = request.data
+#             brand = Brands.objects.get(id = data['id'])
+           
+#         except:
+#             return Response(status=status.HTTP_404_NOT_FOUND)
+
+#         serializer = BrandSerializer(instance=brand, data=request.data)
+#         if serializer.is_valid():
+            
+#             serializer.save()
+#             print(serializer.data)
+#             response = Response(serializer.data)
+#             response.data = {
+#                 'message': 'Updated Successfully!',
+#                 'data': serializer.data,
+#                 'status': status.HTTP_200_OK
+#             }
+#             return response
+#         else:
+#             return Response(serializer.errors)
+
+
 class UpdateBrands(APIView):
     def put(self, request):
+
         try:
             data = request.data
-            brand = Brands.objects.get(id = data['id'])
-        
-        except:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            print("request_data", data)
+            brand_id = data['id']
+            brand_slno = data['brand_slno']
+            brand_name = data['brand_name']
+            brand_image = data['brand_image']
 
-        serializer = BrandSerializer(instance=brand, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            print(serializer.data)
-            response = Response(serializer.data)
+            # brand = Brands.objects.get(id = brand_id)
+
+            # print('brands', brand)
+
+            update_data = Brands.objects.get(id = brand_id).bulk_update(
+                brand_slno = brand_slno,
+                brand_name = brand_name,
+                brand_image = brand_image
+            )
+            print("updated", update_data)
+
+            response = Response(update_data)
             response.data = {
                 'message': 'Updated Successfully!',
-                'data': serializer.data,
+                
                 'status': status.HTTP_200_OK
             }
             return response
-        else:
-            return Response(serializer.errors)
 
+        except Exception as e:
+            return Response(format(e))
 
 
 class DeleteBrands(APIView):
@@ -84,6 +118,7 @@ class DeleteBrands(APIView):
                 'message': 'Deleted Successfully',
                 'status': status.HTTP_200_OK
             }
+            return response
 
         except Exception as e:
             return Response(format(e))
