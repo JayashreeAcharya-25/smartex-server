@@ -38,3 +38,43 @@ class GetCategory(APIView):
 
         except Exception as e:    
             return Response(format(e)) 
+
+
+class UpdateCategory(APIView):
+    def put(self, request):
+        try:
+            data = request.data
+            category = Category.objects.get(id = data['id'])
+        
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        serializer = CategorySerializer(instance=category, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            print(serializer.data)
+            response = Response(serializer.data)
+            response.data = {
+                'message': 'Updated Successfully!',
+                'data': serializer.data,
+                'status': status.HTTP_200_OK
+            }
+            return response
+        else:
+            return Response(serializer.errors)
+
+
+class DeleteCategory(APIView):
+    def delete(self, request, id=0):
+        try:
+            category = Category.objects.filter(id = id)
+            category.delete()
+            response = Response(category)
+            response.data = {
+                'data': category,
+                'message': 'Deleted Successfully',
+                'status': status.HTTP_200_OK
+            }
+
+        except Exception as e:
+            return Response(format(e))
