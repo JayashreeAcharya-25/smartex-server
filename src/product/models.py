@@ -8,6 +8,7 @@ upload_storage = FileSystemStorage(location=MEDIA_ROOT, base_url='media/')
 # Create your models here.
 
 class Product(models.Model):
+    id = models.IntegerField(primary_key=True)
     pro_slno = models.CharField(max_length=150)
     pro_code = models.CharField(max_length=150)
     pro_name = models.CharField(max_length=5000)

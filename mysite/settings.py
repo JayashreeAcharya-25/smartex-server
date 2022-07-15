@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'src.brands',
     'src.category',
     'src.product',
+    'src.stock',
 ]
 
 MIDDLEWARE = [
