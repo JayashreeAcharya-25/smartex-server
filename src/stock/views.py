@@ -44,25 +44,24 @@ class UpdateStock(APIView):
     def put(self, request):
         try:
             data = request.data
-            print(data)
-            stock = Stock.objects.get(id = data['id'])
-        
-        except:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            id = data['id']
+            
+            stock = Stock.objects.get(id = id)
 
-        serializer = StockSerializer(instance=stock, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            print(serializer.data)
-            response = Response(serializer.data)
-            response.data = {
-                'message': 'Updated Successfully!',
-                'data': serializer.data,
-                'status': status.HTTP_200_OK
-            }
-            return response
-        else:
-            return Response(serializer.errors)
+            serializer = StockSerializer(stock, data=request.data, partial=True)
+            
+            if serializer.is_valid():
+                serializer.save()
+                response = Response()
+                response.data = {
+                    'message': 'Updated Successfully!',
+                    'data': serializer.data,
+                    'status': status.HTTP_200_OK
+                }
+                return response
+
+        except Exception as e:
+            return Response(format(e))
 
 
 class DeleteStock(APIView):

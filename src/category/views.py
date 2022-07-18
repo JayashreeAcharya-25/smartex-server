@@ -41,27 +41,27 @@ class GetCategory(APIView):
 
 
 class UpdateCategory(APIView):
-    def put(self, request):
+    def patch(self, request):
+        
         try:
             data = request.data
-            category = Category.objects.get(id = data['id'])
-        
-        except:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            id = data['id']
 
-        serializer = CategorySerializer(instance=category, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            print(serializer.data)
-            response = Response(serializer.data)
-            response.data = {
-                'message': 'Updated Successfully!',
-                'data': serializer.data,
-                'status': status.HTTP_200_OK
-            }
-            return response
-        else:
-            return Response(serializer.errors)
+            category = Category.objects.get(id = id)
+            serializer = CategorySerializer(category, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                
+                response = Response()
+                response.data = {
+                    'message': 'Updated Successfully!',
+                    'data': serializer.data,
+                    'status': status.HTTP_200_OK
+                }
+                return response
+                
+        except Exception as e:
+            return Response(format(e))
 
 
 class DeleteCategory(APIView):
